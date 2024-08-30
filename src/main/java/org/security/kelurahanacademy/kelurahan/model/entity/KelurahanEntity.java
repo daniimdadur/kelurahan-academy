@@ -1,0 +1,35 @@
+package org.security.kelurahanacademy.kelurahan.model.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "tbl_kelurahan")
+public class KelurahanEntity {
+
+    @Id
+    @Column
+    private String id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "kec")
+    private String kec;
+
+    @OneToMany(mappedBy = "kelurahan", fetch = FetchType.LAZY, cascade = CascadeType.ALL ,orphanRemoval = true)
+    private List<DusunEntity> dusunModels = new ArrayList<>();
+
+    public void addDusun(DusunEntity entity) {
+        this.dusunModels.add(entity);
+        entity.setKelurahan(this);
+    }
+}
