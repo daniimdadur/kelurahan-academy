@@ -23,7 +23,7 @@ public class PeopleEntity {
     private Integer nik;
 
     @Column(name = "name")
-    private String nama;
+    private String name;
 
     @Column(name = "gender")
     private String gender;
