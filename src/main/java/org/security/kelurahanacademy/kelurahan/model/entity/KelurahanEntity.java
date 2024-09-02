@@ -25,11 +25,17 @@ public class KelurahanEntity {
     @Column(name = "kec")
     private String kec;
 
-    @OneToMany(mappedBy = "kelurahan", fetch = FetchType.LAZY, cascade = CascadeType.ALL ,orphanRemoval = true)
-    private List<DusunEntity> dusunModels = new ArrayList<>();
+    @OneToMany(mappedBy = "kelurahan", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DusunEntity> dusunList = new ArrayList<>();
 
     public void addDusun(DusunEntity entity) {
-        this.dusunModels.add(entity);
+        this.dusunList.add(entity);
         entity.setKelurahan(this);
+    }
+
+    public KelurahanEntity(String id, String name, String kec) {
+        this.id = id;
+        this.name = name;
+        this.kec = kec;
     }
 }

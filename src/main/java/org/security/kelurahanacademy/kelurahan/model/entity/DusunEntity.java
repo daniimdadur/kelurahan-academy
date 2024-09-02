@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,4 +31,18 @@ public class DusunEntity {
     @JoinColumn(name = "kelurahan_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private KelurahanEntity kelurahan;
+
+    @OneToMany(mappedBy = "dusun", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RWEntity> rwList = new ArrayList<>();
+
+    public void addRW(RWEntity entity) {
+        this.rwList.add(entity);
+        entity.setDusun(this);
+    }
+
+    public DusunEntity(String id, String name, String dusunLeader) {
+        this.id = id;
+        this.name = name;
+        this.dusunLeader = dusunLeader;
+    }
 }

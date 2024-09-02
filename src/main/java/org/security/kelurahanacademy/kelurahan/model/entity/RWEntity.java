@@ -1,9 +1,6 @@
 package org.security.kelurahanacademy.kelurahan.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_RW")
+@Table(name = "tbl_rw")
 public class RWEntity {
 
     @Id
@@ -24,4 +21,17 @@ public class RWEntity {
 
     @Column(name = "rw_leader")
     private String rwLeader;
+
+    @Column(name = "dusunId", insertable = false, updatable = false)
+    private String dusunId;
+
+    @JoinColumn(name = "dusunId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DusunEntity dusun;
+
+    public RWEntity(String id, String name, String rwLeader) {
+        this.id = id;
+        this.name = name;
+        this.rwLeader = rwLeader;
+    }
 }

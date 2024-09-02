@@ -33,7 +33,12 @@ public class KelurahanServiceImpl implements KelurahanService {
 
     @Override
     public Optional<KelurahanRes> getById(String id) {
-        return Optional.empty();
+        KelurahanEntity result = this.kelurahanRepo.findById(id).orElse(null);
+        if (result == null) {
+            return Optional.empty();
+        }
+        KelurahanRes res = new KelurahanRes(result);
+        return Optional.of(res);
     }
 
     @Override
@@ -54,11 +59,36 @@ public class KelurahanServiceImpl implements KelurahanService {
 
     @Override
     public Optional<KelurahanRes> update(KelurahanReq request, String id) {
-        return Optional.empty();
+        KelurahanEntity result = this.kelurahanRepo.findById(id).orElse(null);
+        if (result == null) {
+            log.info("kelurahan with id {} not found", id);
+            return Optional.empty();
+        }
+        BeanUtils.copyProperties(request, result);
+        try {
+            this.kelurahanRepo.save(result);
+            log.info("update kelurahan to database success");
+            return Optional.of(new KelurahanRes(result));
+        } catch (Exception e) {
+            log.error("update kelurahan to database failed, error: {}", e.getMessage());
+            return Optional.empty();
+        }
     }
 
     @Override
     public Optional<KelurahanRes> delete(String id) {
-        return Optional.empty();
+        KelurahanEntity result = this.kelurahanRepo.findById(id).orElse(null);
+        if (result == null) {
+            log.warn("kelurahan with id {} not found", id);
+            return Optional.empty();
+        }
+        try {
+            this.kelurahanRepo.delete(result);
+            log.info("delete kelurahan to database success");
+            return Optional.of(new KelurahanRes(result));
+        } catch (Exception e) {
+            log.error("delete kelurahan to database failed, error: {}", e.getMessage());
+            return Optional.empty();
+        }
     }
 }

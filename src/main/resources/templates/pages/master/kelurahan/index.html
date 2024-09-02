@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>kelurahan-index</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid position-relative d-flex p-0">
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-secondary rounded h-100 p-4">
+                        <div class="table-responsive">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h3>Kelurahan List</h3>
+                                <a th:href="@{~/desa/add}" class="btn btn-outline-info"><i class="bi bi-plus-square"></i>&nbsp;Add New Desa</a>
+                            </div>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Desa</th>
+                                    <th>Kecamatan</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item, stat : ${data}">
+                                    <th scope="row" th:text="${stat.index + 1}"></th>
+                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${item.name}"></td>
+                                    <td th:text="${item.kec}"></td>
+                                    <td>
+                                        <a th:href="@{~/desa/detail/{id}(id = ${item.id})}" class="btn btn-outline-light">
+                                            <i class="bi bi-eye"></i>&nbsp;Detail
+                                        </a>
+                                        <a th:href="@{~/desa/edit/{id}(id = ${item.id})}" class="btn btn-outline-warning">
+                                            <i class="bi bi-pencil-square"></i>&nbsp;Edit
+                                        </a>
+                                        <a th:href="@{~/desa/delete/{id}(id = ${item.id})}" class="btn btn-outline-danger">
+                                            <i class="bi bi-trash3-fill"></i>&nbsp;Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
