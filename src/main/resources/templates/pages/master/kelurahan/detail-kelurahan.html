@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>detail-kelurahan</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid position-relative d-flex p-0">
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-secondary rounded h-100 p-4">
+                        <h5 class="mb-2"># Detail Kelurahan</h5>
+                        <form>
+                            <fieldset disabled class="mb-3">
+                                <div class="mb-3">
+                                    <label for="id" class="form-label">#</label>
+                                    <input type="text" class="form-control" id="id" name="id" th:value="${kelurahan.id}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Kelurahan</label>
+                                    <input type="text" class="form-control" id="name" name="name" th:value="${kelurahan.name}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kec" class="form-label">Kecamatan</label>
+                                    <input type="text" class="form-control" id="kec" name="kec" th:value="${kelurahan.kec}">
+                                </div>
+                            </fieldset>
+                            <h5># Daftar Dusun</h5>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Leader</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="dusun, stat : ${kelurahan.dusunList}">
+                                    <th scope="row" th:text="${stat.index + 1}"></th>
+                                    <td th:text="${dusun.id}"></td>
+                                    <td th:text="${dusun.name}"></td>
+                                    <td th:text="${dusun.dusunLeader}"></td>
+                                    <td>
+                                        <a th:href="@{~/kelurahan/{id}/dusun/{dusunId}(id=${id}, dusunId=${dusun.id})}" class="btn btn-outline-light">
+                                            <i class="bi bi-eye"></i>&nbsp;Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light" onclick="window.history.back();">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

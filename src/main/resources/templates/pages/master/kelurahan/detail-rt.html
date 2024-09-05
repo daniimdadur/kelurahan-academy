@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>detail-rt</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid position-relative d-flex p-0">
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-secondary rounded h-100 p-4">
+                        <h5 class="mb-2"># Detail RT</h5>
+                        <form>
+                            <fieldset disabled class="mb-3">
+                                <div class="mb-3">
+                                    <label for="id" class="form-label">#</label>
+                                    <input type="text" class="form-control" id="id" name="id" th:value="${rt.id}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kelurahan" class="form-label">Kelurahan</label>
+                                    <input type="text" class="form-control" id="kelurahan" name="kelurahan" th:value="${kelurahan.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dusun" class="form-label">Dusun</label>
+                                    <input type="text" class="form-control" id="dusun" name="name" th:value="${dusun.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rw" class="form-label">RW</label>
+                                    <input type="text" class="form-control" id="rw" name="name" th:value="${rw.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">RT</label>
+                                    <input type="text" class="form-control" id="name" name="name" th:value="${rt.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rt-leader" class="form-label">Leader</label>
+                                    <input type="text" class="form-control" id="rt-leader" name="rtLeader" th:value="${rt.rtLeader}" readonly>
+                                </div>
+                            </fieldset>
+                            <h5># Daftar Warga</h5>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>NIK</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Age</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="warga, stat : ${rt.peopleList}">
+                                    <th scope="row" th:text="${stat.index + 1}"></th>
+                                    <td th:text="${warga.id}"></td>
+                                    <td th:text="${warga.nik}"></td>
+                                    <td th:text="${warga.name}"></td>
+                                    <td th:text="${warga.gender}"></td>
+                                    <td th:text="${warga.age}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light" onclick="window.history.back();">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

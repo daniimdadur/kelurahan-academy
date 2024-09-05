@@ -1,11 +1,13 @@
 package org.security.kelurahanacademy.kelurahan.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -28,6 +30,14 @@ public class RWEntity {
     @JoinColumn(name = "dusunId")
     @ManyToOne(fetch = FetchType.LAZY)
     private DusunEntity dusun;
+
+    @OneToMany(mappedBy = "rw", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RTEntity> rtList = new ArrayList<>();
+
+    public void addRt(RTEntity rtEntity) {
+        this.rtList.add(rtEntity);
+        rtEntity.setRw(this);
+    }
 
     public RWEntity(String id, String name, String rwLeader) {
         this.id = id;

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>detail-rw</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid position-relative d-flex p-0">
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-secondary rounded h-100 p-4">
+                        <h5 class="mb-2"># Detail RW</h5>
+                        <form>
+                            <fieldset disabled class="mb-3">
+                                <div class="mb-3">
+                                    <label for="id" class="form-label">#</label>
+                                    <input type="text" class="form-control" id="id" name="id" th:value="${rw.id}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kelurahan" class="form-label">Kelurahan</label>
+                                    <input type="text" class="form-control" id="kelurahan" name="name" th:value="${kelurahan.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dusun" class="form-label">Dusun</label>
+                                    <input type="text" class="form-control" id="dusun" name="name" th:value="${dusun.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">RW</label>
+                                    <input type="text" class="form-control" id="name" name="name" th:value="${rw.name}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rw-leader" class="form-label">Leader</label>
+                                    <input type="text" class="form-control" id="rw-leader" name="rwLeader" th:value="${rw.rwLeader}" readonly>
+                                </div>
+                            </fieldset>
+                            <h5># Daftar RT</h5>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Leader</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="rt, stat : ${rw.rtList}">
+                                    <th scope="row" th:text="${stat.index + 1}"></th>
+                                    <td th:text="${rt.id}"></td>
+                                    <td th:text="${rt.name}"></td>
+                                    <td th:text="${rt.rtLeader}"></td>
+                                    <td>
+                                        <a th:href="@{~/kelurahan/{id}/dusun/{dusunId}/rw/{rwId}/rt/{rtId}(id = ${id}, dusunId = ${dusunId}, rwId = ${rwId}, rtId = ${rt.id})}" class="btn btn-outline-light">
+                                            <i class="bi bi-eye"></i>&nbsp;Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light" onclick="window.history.back();">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -21,7 +21,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>#</th>
-                                    <th>Desa</th>
+                                    <th>Kelurahan</th>
                                     <th>Kecamatan</th>
                                     <th>Action</th>
                                 </tr>
@@ -33,7 +33,7 @@
                                     <td th:text="${item.name}"></td>
                                     <td th:text="${item.kec}"></td>
                                     <td>
-                                        <a th:href="@{~/desa/detail/{id}(id = ${item.id})}" class="btn btn-outline-light">
+                                        <a th:href="@{~/kelurahan/detail/{id}(id = ${item.id})}" class="btn btn-outline-light">
                                             <i class="bi bi-eye"></i>&nbsp;Detail
                                         </a>
                                         <a th:href="@{~/desa/edit/{id}(id = ${item.id})}" class="btn btn-outline-warning">

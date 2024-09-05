@@ -46,8 +46,8 @@ public class RWServiceImpl implements RWService {
     public Optional<RWRes> save(RWReq request) {
         RWEntity result = new RWEntity();
 
+        request.setId(UUID.randomUUID().toString());
         BeanUtils.copyProperties(request, result);
-        result.setId(UUID.randomUUID().toString());
         try {
             this.rwRepo.save(result);
             log.info("save rw to database success");

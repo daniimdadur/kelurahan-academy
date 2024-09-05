@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface RTService {
     List<RTRes> get();
-    Optional<RTRes> get(String id);
+    Optional<RTRes> getById(String id);
     Optional<RTRes> save(RTReq request);
     Optional<RTRes> update(RTReq request, String id);
     Optional<RTRes> delete(String id);

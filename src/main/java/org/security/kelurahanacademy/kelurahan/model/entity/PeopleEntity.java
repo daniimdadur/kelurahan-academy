@@ -1,14 +1,10 @@
 package org.security.kelurahanacademy.kelurahan.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -30,4 +26,19 @@ public class PeopleEntity {
 
     @Column(name = "age")
     private String age;
+
+    @Column(name = "rt_id", insertable = false, updatable = false)
+    private String rtId;
+
+    @JoinColumn(name = "rt_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private RTEntity rt;
+
+    public PeopleEntity(String id, Integer nik, String name, String gender, String age) {
+        this.id = id;
+        this.nik = nik;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+    }
 }
