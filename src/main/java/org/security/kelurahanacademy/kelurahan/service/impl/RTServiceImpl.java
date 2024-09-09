@@ -3,9 +3,11 @@ package org.security.kelurahanacademy.kelurahan.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.security.kelurahanacademy.kelurahan.model.entity.RTEntity;
+import org.security.kelurahanacademy.kelurahan.model.entity.RWEntity;
 import org.security.kelurahanacademy.kelurahan.model.request.RTReq;
 import org.security.kelurahanacademy.kelurahan.model.response.RTRes;
 import org.security.kelurahanacademy.kelurahan.repo.RTRepo;
+import org.security.kelurahanacademy.kelurahan.repo.RWRepo;
 import org.security.kelurahanacademy.kelurahan.service.RTService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RTServiceImpl implements RTService {
     private final RTRepo rtRepo;
+    private final RWRepo rwRepo;
 
     @Override
     public List<RTRes> get() {
@@ -41,10 +44,16 @@ public class RTServiceImpl implements RTService {
 
     @Override
     public Optional<RTRes> save(RTReq request) {
+        RWEntity rwEntity = this.rwRepo.findById(request.getRwId()).orElse(null);
+        if (rwEntity == null) {
+            return Optional.empty();
+        }
+
         RTEntity result = new RTEntity();
 
         request.setId(UUID.randomUUID().toString());
         BeanUtils.copyProperties(request, result);
+        result.setRw(rwEntity);
         try {
             this.rtRepo.save(result);
             log.info("save rt success");

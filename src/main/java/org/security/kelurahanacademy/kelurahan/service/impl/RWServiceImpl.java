@@ -2,9 +2,12 @@ package org.security.kelurahanacademy.kelurahan.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.security.kelurahanacademy.kelurahan.model.entity.DusunEntity;
 import org.security.kelurahanacademy.kelurahan.model.entity.RWEntity;
 import org.security.kelurahanacademy.kelurahan.model.request.RWReq;
 import org.security.kelurahanacademy.kelurahan.model.response.RWRes;
+import org.security.kelurahanacademy.kelurahan.repo.DusunRepo;
+import org.security.kelurahanacademy.kelurahan.repo.KelurahanRepo;
 import org.security.kelurahanacademy.kelurahan.repo.RWRepo;
 import org.security.kelurahanacademy.kelurahan.service.RWService;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RWServiceImpl implements RWService {
     private final RWRepo rwRepo;
+    private final DusunRepo dusunRepo;
 
     @Override
     public List<RWRes> get() {
@@ -44,10 +48,16 @@ public class RWServiceImpl implements RWService {
 
     @Override
     public Optional<RWRes> save(RWReq request) {
+        DusunEntity dusun = this.dusunRepo.findById(request.getDusunId()).orElse(null);
+        if (dusun == null) {
+            return Optional.empty();
+        }
+
         RWEntity result = new RWEntity();
 
         request.setId(UUID.randomUUID().toString());
         BeanUtils.copyProperties(request, result);
+        result.setDusun(dusun);
         try {
             this.rwRepo.save(result);
             log.info("save rw to database success");
@@ -93,5 +103,17 @@ public class RWServiceImpl implements RWService {
             log.error("delete rw from database failed, error: {}", e.getMessage());
             return Optional.empty();
         }
+    }
+
+    private RWRes converEntityToRes(RWEntity entity) {
+        RWRes result = new RWRes();
+
+        BeanUtils.copyProperties(entity, result);
+        if (entity.getRtList() != null) {
+            result.setDusunId(entity.getDusunId());
+            result.setDusunName(entity.getName());
+        }
+
+        return result;
     }
 }

@@ -13,4 +13,13 @@ public class PeopleReq {
     private String name;
     private String gender;
     private String age;
+    private String rtId;
+
+    public PeopleReq(String id, Integer nik, String name, String gender, String age) {
+        this.id = id;
+        this.nik = nik;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+    }
 }

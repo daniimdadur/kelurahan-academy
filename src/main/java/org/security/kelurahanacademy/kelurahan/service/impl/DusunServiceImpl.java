@@ -3,9 +3,11 @@ package org.security.kelurahanacademy.kelurahan.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.security.kelurahanacademy.kelurahan.model.entity.DusunEntity;
+import org.security.kelurahanacademy.kelurahan.model.entity.KelurahanEntity;
 import org.security.kelurahanacademy.kelurahan.model.request.DusunReq;
 import org.security.kelurahanacademy.kelurahan.model.response.DusunRes;
 import org.security.kelurahanacademy.kelurahan.repo.DusunRepo;
+import org.security.kelurahanacademy.kelurahan.repo.KelurahanRepo;
 import org.security.kelurahanacademy.kelurahan.service.DusunService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DusunServiceImpl implements DusunService {
     private final DusunRepo dusunRepo;
+    private final KelurahanRepo kelurahanRepo;
 
     @Override
     public List<DusunRes> get() {
@@ -35,24 +38,31 @@ public class DusunServiceImpl implements DusunService {
     public Optional<DusunRes> getById(String id) {
         DusunEntity result = this.dusunRepo.findById(id).orElse(null);
         if (result == null) {
+            log.info("dusun with id {} not found", id);
             return Optional.empty();
         }
+
         DusunRes res = new DusunRes(result);
         return Optional.of(res);
     }
 
     @Override
     public Optional<DusunRes> save(DusunReq request) {
+        KelurahanEntity kelurahan = this.kelurahanRepo.findById(request.getKelurahanId()).orElse(null);
+        if (kelurahan == null) {
+            return Optional.empty();
+        }
+
         DusunEntity result = new DusunEntity();
 
         request.setId(UUID.randomUUID().toString());
         BeanUtils.copyProperties(request, result);
+        result.setKelurahan(kelurahan);
         try {
             this.dusunRepo.save(result);
-            log.info("save dusun to database success");
             return Optional.of(new DusunRes(result));
         } catch (Exception e) {
-            log.error("save dusun to database failed, error: {}", e.getMessage());
+            log.error("save dusun failed, error: {}", e.getMessage());
             return Optional.empty();
         }
     }
@@ -64,13 +74,16 @@ public class DusunServiceImpl implements DusunService {
             log.info("dusun with id {} not found", id);
             return Optional.empty();
         }
+
         BeanUtils.copyProperties(request, result);
+        KelurahanEntity kelurahanEntity = this.kelurahanRepo.findById(request.getKelurahanId()).orElse(null);
+        result.setKelurahanId(kelurahanEntity.getId());
+
         try {
-            this.dusunRepo.save(result);
-            log.info("update dusun to database success");
+            this.dusunRepo.saveAndFlush(result);
             return Optional.of(new DusunRes(result));
         } catch (Exception e) {
-            log.info("update dusun to database failed");
+            log.error("save dusun failed, error: {}", e.getMessage());
             return Optional.empty();
         }
     }
@@ -91,5 +104,67 @@ public class DusunServiceImpl implements DusunService {
             log.error("delete dusun from database failed, error: {}", e.getMessage());
             return Optional.empty();
         }
+    }
+
+    private Optional<DusunRes> saveOrUpdate(DusunEntity result) {
+        try {
+            this.dusunRepo.saveAndFlush(result);
+            return Optional.of(convertEntityToRes(result));
+        } catch (Exception e) {
+            log.error("save dusun failed, error: {}", e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    private DusunEntity getEntityById(String id) {
+        DusunEntity result = this.dusunRepo.findById(id).orElse(null);
+        if (result == null) {
+            log.warn("dusun with id {} not found", id);
+            return null;
+        }
+
+        return result;
+    }
+
+    private KelurahanEntity getKelurahanById(String id) {
+        KelurahanEntity result = kelurahanRepo.findById(id).orElse(null);
+        if (result == null) {
+            log.warn("kelurahan with id {} not found", id);
+            return null;
+        }
+
+        return result;
+    }
+
+    private DusunEntity convertReqToEntity(DusunReq request) {
+        KelurahanEntity kelurahanEntity = this.kelurahanRepo.findById(request.getKelurahanId()).orElse(null);
+        if (kelurahanEntity == null) {
+            return null;
+        }
+
+        DusunEntity result = new DusunEntity();
+        request.setId(UUID.randomUUID().toString());
+        BeanUtils.copyProperties(request, result);
+        result.setKelurahan(kelurahanEntity);
+        return result;
+    }
+
+    private DusunRes convertEntityToRes(DusunEntity entity) {
+        DusunRes result = new DusunRes();
+
+        BeanUtils.copyProperties(entity, result);
+        if (entity.getKelurahan() != null) {
+            result.setKelurahanId(entity.getKelurahan().getId());
+            result.setKelurahanName(entity.getKelurahan().getName());
+        }
+
+        return result;
+    }
+
+    private void convertReqToEntity(DusunReq request, DusunEntity result) {
+        BeanUtils.copyProperties(request, result);
+
+        KelurahanEntity kelurahanEntity = this.kelurahanRepo.findById(request.getKelurahanId()).orElse(null);
+        result.setKelurahanId(kelurahanEntity.getId());
     }
 }

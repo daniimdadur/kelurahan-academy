@@ -17,10 +17,14 @@ public class RWRes {
     private String id;
     private String name;
     private String rwLeader;
+    private String dusunId;
+    private String dusunName;
     private List<RTRes> rtList = new ArrayList<>();
 
     public RWRes(RWEntity rwEntity) {
         BeanUtils.copyProperties(rwEntity, this);
+        this.dusunId = rwEntity.getDusunId();
+        this.dusunName = rwEntity.getDusun().getName();
 
         if (!rwEntity.getRtList().isEmpty()) {
             for (RTEntity entity : rwEntity.getRtList()) {

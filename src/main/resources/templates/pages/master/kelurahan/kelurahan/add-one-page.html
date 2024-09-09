@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>add</title>
+</head>
+<body>
+<div class="container-xxl flex-grow-1 container-p-y" layout:fragment="content">
+    <h4>#Desa Detail</h4>
+    <form th:action="@{~/kelurahan/_save}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Desa</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${desa.name}">
+        </div>
+        <div class="mb-3">
+            <label for="kec" class="form-label">Kecamatan</label>
+            <input type="text" class="form-control" id="kec" name="kec" th:value="${desa.kec}">
+        </div>
+        <div id="dusun-container">
+            <div class="dusun-card" th:each="dusun, dusIte : ${desa.dusunList}">
+                <h4 class="d-flex justify-content-between align-items-center">
+                    #Daftar Dusun
+                    <button class="btn btn-outline-dark ms-auto btn-add-dusun" type="button">
+                        New Dusun
+                    </button>
+                </h4>
+                <div class="card mb-3">
+                    <h5 class="card-header" th:text="'#Dusun ' + ${dusIte.index + 1}"></h5>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label th:for="|id_${dusIte.index}_name|" class="form-label">Dusun Name</label>
+                            <input type="text" class="form-control" th:id="|id_${dusIte.index}_name|" th:name="|dusunList[${dusIte.index}].name|">
+                        </div>
+                        <div class="mb-3">
+                            <label th:for="|id_${dusIte.index}_dusunLeader|" class="form-label">Leader Name</label>
+                            <input type="text" class="form-control" th:id="|id_${dusIte.index}_dusunLeader|" th:name="|dusunList[${dusIte.index}].dusunLeader|">
+                        </div>
+                        <div class="rw-container">
+                            <div class="rw-card" th:each="rw, rwIter : ${dusun.rwList}">
+                                <h4 class="d-flex justify-content-between align-items-center">
+                                    #Daftar RW
+                                    <button class="btn btn-outline-dark ms-auto btn-add-rw" type="button">
+                                        New RW
+                                    </button>
+                                </h4>
+                                <div class="card mb-3">
+                                    <h5 class="card-header" th:text="'#RW ' + ${rwIter.index + 1}"></h5>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label th:for="|id_${rwIter.index}_name|" class="form-label">RW Name</label>
+                                            <input type="text" class="form-control" th:id="|id_${rwIter.index}_name|" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].name|">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label th:for="|id_${rwIter.index}_rwLeader|" class="form-label">Leader Name</label>
+                                            <input type="text" class="form-control" th:id="|id_${rwIter.index}_rwLeader|" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rwLeader|">
+                                        </div>
+                                        <div class="rt-container">
+                                            <div class="rt-card" th:each="rt, rtIter : ${rw.rtList}">
+                                                <h4 class="d-flex justify-content-between align-items-center">
+                                                    #Daftar RT
+                                                    <button class="btn btn-outline-dark ms-auto btn-add-rt" type="button">
+                                                        New RT
+                                                    </button>
+                                                </h4>
+                                                <div class="card mb-3">
+                                                    <h5 class="card-header" th:text="'#RT ' + ${rtIter.index + 1}"></h5>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <label th:for="|id_${rtIter.index}_name|" class="form-label">RT Name</label>
+                                                            <input type="text" class="form-control" th:id="|id_${rtIter.index}_name|" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rtList[${rtIter.index}].name|">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label th:for="|id_${rtIter.index}_rtLeader|" class="form-label">Leader Name</label>
+                                                            <input type="text" class="form-control" th:id="|id_${rtIter.index}_rtLeader|" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rtList[${rtIter.index}].rtLeader|">
+                                                        </div>
+                                                        <div class="warga-container">
+                                                            <h4 class="d-flex justify-content-between align-items-center">
+                                                                #Daftar Warga
+                                                                <button class="btn btn-outline-dark ms-auto btn-add-warga" type="button">
+                                                                    New Warga
+                                                                </button>
+                                                            </h4>
+                                                            <table class="table table-bordered table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>No</th>
+                                                                    <th>NIK</th>
+                                                                    <th>Name</th>
+                                                                    <th>Gender</th>
+                                                                    <th>Age</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody class="warga-body">
+                                                                <tr class="warga-row" th:each="warga, wargaIter : ${rt.peopleList}">
+                                                                    <th scope="row" th:text="${wargaIter.index + 1}"></th>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rtList[${rtIter.index}].peopleList[${wargaIter.index}].nik|">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rtList[${rtIter.index}].peopleList[${wargaIter.index}].name|">
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="form-select" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rtList[${rtIter.index}].peopleList[${wargaIter.index}].gender|">
+                                                                            <option value="" selected disabled>Pilih Gender</option>
+                                                                            <option value="Pria">Pria</option>
+                                                                            <option value="Wanita">Wanita</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" th:name="|dusunList[${dusIte.index}].rwList[${rwIter.index}].rtList[${rtIter.index}].peopleList[${wargaIter.index}].age|">
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mb-3 me-3">
+            <button type="submit" class="btn btn-outline-success me-2">
+                Save
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">
+                Back
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

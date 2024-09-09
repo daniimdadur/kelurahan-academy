@@ -5,57 +5,45 @@
     <title>student-index</title>
 </head>
 <body>
-<div layout:fragment="content">
-    <div class="container-fluid position-relative d-flex p-0">
-        <div class="container-fluid pt-4 px-4">
-            <div class="row g-4">
-                <div class="col-12">
-                    <div class="bg-secondary rounded h-100 p-4">
-                        <div class="table-responsive">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h3>Student List</h3>
-                                <a th:href="@{~/desa/add}" class="btn btn-outline-info"><i class="bi bi-plus-square"></i>&nbsp;Add New Student</a>
-                            </div>
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Id</th>
-                                        <th>NIS</th>
-                                        <th>Firs Name</th>
-                                        <th>Last Name</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="item, stat : ${data}">
-                                        <td th:text="${stat.index + 1}"></td>
-                                        <td th:text="${item.id}"></td>
-                                        <td th:text="${item.nis}"></td>
-                                        <td th:text="${item.firstName}"></td>
-                                        <td th:text="${item.lastName}"></td>
-                                        <td th:text="${item.address}"></td>
-                                        <td>
-                                            <a th:href="@{~/student/detail/{id}(id = ${item.id})}" class="btn btn-outline-light">
-                                                <i class="bi bi-eye"></i>&nbsp;Detail
-                                            </a>
-                                            <a th:href="@{~/desa/edit/{id}(id = ${item.id})}" class="btn btn-outline-warning">
-                                                <i class="bi bi-pencil-square"></i>&nbsp;Edit
-                                            </a>
-                                            <a th:href="@{~/desa/delete/{id}(id = ${item.id})}" class="btn btn-outline-danger">
-                                                <i class="bi bi-trash3-fill"></i>&nbsp;Delete
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container-xxl flex-grow-1 container-p-y" layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Student List</h3>
+        <a th:href="@{~/student/add}" class="btn btn-outline-info mb-3"><i class="bi bi-plus-square"></i>&nbsp;New Student</a>
     </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>Id</th>
+            <th>NIS</th>
+            <th>Firs Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item, stat : ${data}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.nis}"></td>
+            <td th:text="${item.firstName}"></td>
+            <td th:text="${item.lastName}"></td>
+            <td th:text="${item.address}"></td>
+            <td>
+                <a th:href="@{~/student/detail/{id}(id = ${item.id})}" class="btn btn-outline-primary">
+                    <i class="bi bi-eye"></i>&nbsp;Detail
+                </a>
+                <a th:href="@{~/student/edit/{id}(id = ${item.id})}" class="btn btn-outline-warning">
+                    <i class="bi bi-pencil-square"></i>&nbsp;Edit
+                </a>
+                <a th:href="@{~/student/delete/{id}(id = ${item.id})}" class="btn btn-outline-danger">
+                    <i class="bi bi-trash3-fill"></i>&nbsp;Delete
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

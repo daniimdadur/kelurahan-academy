@@ -11,4 +11,9 @@ public class HomeController {
     public String home() {
         return "pages/home/index";
     }
+
+    @GetMapping("test")
+    public String error() {
+        return "pages/auth/error-404";
+    }
 }

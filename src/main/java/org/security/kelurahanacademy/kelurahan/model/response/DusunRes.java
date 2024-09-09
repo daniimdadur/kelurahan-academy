@@ -17,10 +17,14 @@ public class DusunRes {
     private String id;
     private String name;
     private String dusunLeader;
+    private String kelurahanId;
+    private String kelurahanName;
     private List<RWRes> rwList = new ArrayList<>();
 
     public DusunRes(DusunEntity dusunEntity) {
         BeanUtils.copyProperties(dusunEntity, this);
+        this.kelurahanId = dusunEntity.getKelurahanId();
+        this.kelurahanName = dusunEntity.getKelurahan().getName();
 
         if (!dusunEntity.getRwList().isEmpty()) {
             this.rwList = dusunEntity.getRwList().stream().map(RWRes::new).collect(Collectors.toList());

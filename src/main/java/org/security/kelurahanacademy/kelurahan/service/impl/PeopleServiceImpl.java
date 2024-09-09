@@ -3,9 +3,11 @@ package org.security.kelurahanacademy.kelurahan.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.security.kelurahanacademy.kelurahan.model.entity.PeopleEntity;
+import org.security.kelurahanacademy.kelurahan.model.entity.RTEntity;
 import org.security.kelurahanacademy.kelurahan.model.request.PeopleReq;
 import org.security.kelurahanacademy.kelurahan.model.response.PeopleRes;
 import org.security.kelurahanacademy.kelurahan.repo.PeopleRepo;
+import org.security.kelurahanacademy.kelurahan.repo.RTRepo;
 import org.security.kelurahanacademy.kelurahan.service.PeopleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PeopleServiceImpl implements PeopleService {
     private final PeopleRepo peopleRepo;
+    private final RTRepo rtRepo;
 
     @Override
     public List<PeopleRes> get() {
@@ -44,10 +47,16 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public Optional<PeopleRes> save(PeopleReq request) {
+        RTEntity rtEntity = this.rtRepo.findById(request.getRtId()).orElse(null);
+        if (rtEntity == null) {
+            return Optional.empty();
+        }
+
         PeopleEntity result = new PeopleEntity();
 
         request.setId(UUID.randomUUID().toString());
         BeanUtils.copyProperties(request, result);
+        result.setRt(rtEntity);
         try {
             this.peopleRepo.save(result);
             log.info("save people success");

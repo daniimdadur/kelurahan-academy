@@ -15,8 +15,12 @@ public class PeopleRes {
     private String name;
     private String gender;
     private String age;
+    private String rtId;
+    private String rtName;
 
     public PeopleRes(PeopleEntity peopleEntity) {
         BeanUtils.copyProperties(peopleEntity, this);
+        this.rtId = peopleEntity.getRtId();
+        this.rtName = peopleEntity.getRt().getName();
     }
 }
